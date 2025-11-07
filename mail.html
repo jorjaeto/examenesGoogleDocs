@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <div>
+      <p>Estimado/a aspirante,</p>
+      <p>Tu código de opositor es: <b><?= codigo ?></b>.</p>
+      <p>Adjunta se encuentra la copia en formato PDF del ejercicio que has entregado para el proceso selectivo Arquitecto/a-Ingeniero/a CCPP.</p>
+      <p>También se adjunta un archivo con el resumen hash (SHA-512 hexadecimal), que permite verificar la integridad de tu copia entregada.</p>
+      <br>
+      <p>Resumen SHA-512 hexadecimal del documento: <br>
+      <pre><?= sha512 ?></pre>
+      </p>
+      <br>
+      <p><strong>Este es un correo electrónico generado automáticamente. Por favor, no respondas a este mensaje.</strong></p>
+    </div>
+  </body>
+</html>
