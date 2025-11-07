@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_top">
+    <title>Registro de Examen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .error { color: #dc3545; font-size: 0.875em; }
+        .titulo-azul { color: #0056b3; }
+        .container { max-width: 600px; }
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #007bff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1.5s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .btn-primary { background-color: #0056b3; border-color: #0056b3; }
+																			 
+        .input-group-text { cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container mt-4 mb-4">
+        <h2 class="titulo-azul text-center mb-4">Primer Ejercicio<br>Arquitecto/a-Ingeniero/a CCPP</h2>
+        <form id="examenForm" novalidate>
+												   
+            <div class="form-group">
+                <label for="tipoEnvio"><strong>Acción a realizar:</strong></label>
+                <select class="form-control" id="tipoEnvio" name="tipoEnvio" onchange="mostrarCampos()">
+                    <option value="">Escoge un tipo de envío...</option>
+                    <option value="Iniciar">Iniciar ejercicio</option>
+                    <option value="Continuar">Continuar ejercicio</option>
+                    <option value="Entregar">Entregar ejercicio</option>
+                </select>
+            </div>
+            
+            <input type="hidden" id="turno" name="turno" value="Turno 1">
+            <input type="hidden" name="aula" id="aula" value="Aula 1.2">
+          				
+            <div id="camposIniciar" style="display: none;">
+              <!--
+                <div class="form-group">
+                    <label for="aula"><strong>Aula:</strong></label>
+                    <select class="form-control" id="aula" name="aula" disabled>
+                        <option value="">Selecciona el aula...</option>
+                        <option value="Aula 1.2" selected>Aula 1.2</option>
+                        <option value="Aula 1.3">Aula 1.3</option>
+                    </select>
+                    <div id="aulaError" class="error"></div>
+                </div>
+              -->
+                <div class="form-group">
+                    <label for="codigo1">Código de Examen (4 dígitos):</label>
+                    <input type="text" class="form-control" id="codigo1" name="codigo1" maxlength="4" pattern="\d{4}">
+                    <div id="codigo1Error" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="codigo2">Repetir Código:</label>
+                    <input type="text" class="form-control" id="codigo2" name="codigo2" maxlength="4">
+                    <div id="codigo2Error" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="contrasena1">Contraseña (mínimo 4 caracteres):</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="contrasena1" name="contrasena1">
+                        <div class="input-group-append">
+                            <span class="input-group-text" onclick="togglePasswordVisibility('contrasena1')">Ver</span>
+                        </div>
+                    </div>
+                    <div id="contrasena1Error" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="contrasena2">Repetir Contraseña:</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="contrasena2" name="contrasena2">
+                        <div class="input-group-append">
+                            <span class="input-group-text" onclick="togglePasswordVisibility('contrasena2')">Ver</span>
+                        </div>
+                    </div>
+                    <div id="contrasena2Error" class="error"></div>
+                </div>
+            </div>
+
+										  
+            <div id="camposContinuar" style="display: none;">
+                 <hr>
+                <div class="form-group">
+                    <label for="codigoContinuar">Código de Examen:</label>
+                    <input type="text" class="form-control" id="codigoContinuar" name="codigoContinuar" maxlength="4">
+                    <div id="codigoContinuarError" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="contrasenaContinuar">Contraseña:</label>
+                     <div class="input-group">
+                        <input type="password" class="form-control" id="contrasenaContinuar" name="contrasenaContinuar">
+                        <div class="input-group-append">
+                           <span class="input-group-text" onclick="togglePasswordVisibility('contrasenaContinuar')">Ver</span>
+                        </div>
+                    </div>
+                    <div id="contrasenaContinuarError" class="error"></div>
+                </div>
+            </div>
+
+										 
+            <div id="camposEntregar" style="display: none;">
+                 <hr>
+                <div class="form-group">
+                    <label for="codigoEntregar">Código de Examen:</label>
+                    <input type="text" class="form-control" id="codigoEntregar" name="codigoEntregar" maxlength="4">
+                    <div id="codigoEntregarError" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="contrasenaEntregar">Contraseña:</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="contrasenaEntregar" name="contrasenaEntregar">
+                         <div class="input-group-append">
+                           <span class="input-group-text" onclick="togglePasswordVisibility('contrasenaEntregar')">Ver</span>
+                        </div>
+                    </div>
+                    <div id="contrasenaEntregarError" class="error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="correoEntregar">Correo Electrónico para recibir copia (Opcional):</label>
+                    <input type="email" class="form-control" id="correoEntregar" name="correoEntregar">
+                    <div id="correoEntregarError" class="error"></div>
+                </div>
+            </div>
+            
+            <button type="button" class="btn btn-primary btn-block mt-4" onclick="enviarFormulario()">Enviar</button>
+        </form>
+
+        <div id="mensajeCarga" class="mt-3 text-center" style="display: none;">
+            <div class="loader mx-auto"></div>
+            <p class="mt-2">Procesando su solicitud...</p>
+        </div>
+        <div id="respuestaServidor" class="mt-3 alert" style="display: none;"></div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.nextElementSibling.querySelector('span');
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = 'Ocultar';
+            } else {
+                input.type = 'password';
+                button.textContent = 'Ver';
+            }
+        }
+
+        function mostrarCampos() {
+            const tipoEnvio = document.getElementById("tipoEnvio").value;
+            document.getElementById("camposIniciar").style.display = tipoEnvio === "Iniciar" ? "block" : "none";
+            document.getElementById("camposContinuar").style.display = tipoEnvio === "Continuar" ? "block" : "none";
+            document.getElementById("camposEntregar").style.display = tipoEnvio === "Entregar" ? "block" : "none";
+        }
+
+        function enviarFormulario() {
+            if (validarFormulario()) {
+                document.getElementById('examenForm').style.display = 'none';
+                document.getElementById('mensajeCarga').style.display = 'block';
+                
+                // **MODIFICADO**: Se añade withFailureHandler para capturar errores.
+                google.script.run
+                    .withSuccessHandler(procesarRespuesta)
+                    .withFailureHandler(procesarError)
+                    .doPost({parameter: formToObject(document.getElementById("examenForm"))});
+            }
+        }
+        
+																 
+        function formToObject(form) {
+            const obj = {};
+            const formData = new FormData(form);
+            for (const key of formData.keys()) {
+                obj[key] = formData.get(key);
+            }
+            return obj;
+        }
+
+        function validarFormulario() {
+            let valido = true;
+									  
+            document.querySelectorAll('.error').forEach(el => el.textContent = '');
+
+            const tipoEnvio = document.getElementById("tipoEnvio").value;												 
+												   			
+            if (!tipoEnvio) {
+                alert("Por favor, seleccione un tipo de envío.");
+                return false;
+            }
+
+            if (tipoEnvio === "Iniciar") {
+                const c1 = document.getElementById("codigo1");
+                const aula = document.getElementById("aula").value;
+                if (!/^\d{4}$/.test(c1.value)) {
+                    document.getElementById("codigo1Error").textContent = "El código debe contener 4 dígitos.";
+                    valido = false;
+                }
+                if (c1.value !== document.getElementById("codigo2").value) {
+                    document.getElementById("codigo2Error").textContent = "Los códigos no coinciden.";
+                    valido = false;
+                }
+                const p1 = document.getElementById("contrasena1");
+                if (p1.value.length < 4) {
+                    document.getElementById("contrasena1Error").textContent = "La contraseña debe tener al menos 4 caracteres.";
+                    valido = false;
+                }
+                if (p1.value !== document.getElementById("contrasena2").value) {
+                    document.getElementById("contrasena2Error").textContent = "Las contraseñas no coinciden.";
+                    valido = false;
+                }
+                if (!aula) {
+                document.getElementById("aulaError").textContent = "Debe seleccionar el aula.";
+                valido = false;
+                }
+
+            } else if (tipoEnvio === "Continuar" || tipoEnvio === "Entregar") {
+                const codigo = document.getElementById(tipoEnvio === "Continuar" ? "codigoContinuar" : "codigoEntregar");
+                 if (!/^\d{4}$/.test(codigo.value)) {
+                    document.getElementById(codigo.id + "Error").textContent = "El código debe contener 4 dígitos.";
+                    valido = false;
+                }
+                 if (tipoEnvio === "Entregar") {
+                     const correo = document.getElementById("correoEntregar").value;
+                     if (correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) {
+                         document.getElementById("correoEntregarError").textContent = "Formato de correo no válido.";
+                         valido = false;
+                     }
+                 }
+            }
+			
+            return valido;
+        }
+
+        function procesarRespuesta(respuesta) {
+            document.getElementById('mensajeCarga').style.display = 'none';
+            const divRespuesta = document.getElementById("respuestaServidor");
+            let contenidoHTML = `<p>${respuesta.mensaje}</p>`;
+            
+            if (respuesta.enlaces && respuesta.enlaces.length > 0) {
+                respuesta.enlaces.forEach(enlace => {
+                    if (enlace.url) { 
+                        contenidoHTML += `<div class="mt-3">
+                                            <strong>${enlace.nombre}:</strong><br>
+                                            <a href='${enlace.url}' target='_blank' class='btn btn-success btn-block mt-1'>Abrir</a>
+                                          </div>`;
+                    }
+                });
+                divRespuesta.className = 'alert alert-success text-center';
+            } else {
+                 divRespuesta.className = 'alert alert-info text-center';
+            }
+            divRespuesta.innerHTML = contenidoHTML;
+            divRespuesta.style.display = "block";
+        }
+        
+        // **NUEVO**: Función para manejar todos los errores del servidor.
+        function procesarError(error) {
+            console.error("Error del servidor:", error);
+            document.getElementById('mensajeCarga').style.display = 'none';
+            const divRespuesta = document.getElementById("respuestaServidor");
+            let mensajeUsuario;
+
+            // Comprueba si el error es el de timeout.
+            if (error.message && (error.message.includes('Timeout waiting for lock') || error.message.includes('Se ha superado el tiempo de espera para la solicitud de bloqueo'))) {
+                mensajeUsuario = "El servidor está ocupado, vuelve a recargar la página y realiza de nuevo el envío.";
+            } else {
+                // Muestra el mensaje de error específico del servidor si existe, o uno genérico.
+                mensajeUsuario = error.message || "Ha ocurrido un error inesperado. Por favor, recarga la página e inténtalo de nuevo.";
+            }
+
+            divRespuesta.innerHTML = `<p>${mensajeUsuario}</p>`;
+            divRespuesta.className = 'alert alert-danger text-center';
+            divRespuesta.style.display = "block";
+        }
+
+    </script>
+</body>
+</html>
